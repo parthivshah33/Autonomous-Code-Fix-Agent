@@ -339,7 +339,7 @@ python main.py data/input/trace_1.json --verbose
 
 This project is part of a technical assessment.
 
-## Shipping to Interviewer
+## Shipping
 
 See `SHIPPING_GUIDE.md` for complete instructions on packaging and shipping this project.
 
