@@ -334,24 +334,7 @@ python main.py data/input/trace_1.json --verbose
 1. Edit agent file in `src/agents/`
 2. Update prompts as needed
 3. Ensure state updates are returned correctly
-
-## License
-
-This project is part of a technical assessment.
-
-## Shipping
-
-See `SHIPPING_GUIDE.md` for complete instructions on packaging and shipping this project.
-
-Quick package creation:
-```bash
-# Linux/Mac
-./package.sh
-
-# Windows
-package.bat
-```
-
+4. 
 ## Contact
 
-For questions or issues, please refer to the project documentation or contact the development team.
+For questions or issues, please refer to the project documentation or contact the email : 'parthivshah125@gmail.com' or linkedin : https://www.linkedin.com/in/parthivshah33
