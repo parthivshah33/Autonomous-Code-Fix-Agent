@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  multi-agent-fixer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: multi-agent-fixer:latest
+    container_name: multi-agent-fixer
+    volumes:
+      # Mount input directory for trace files
+      - ./data/input:/app/data/input:ro
+      # Mount output directory for results
+      - ./data/output:/app/data/output
+      # Mount target codebase directory (adjust path as needed)
+      - ../fastapi-tdd-user-authentication:/app/target-codebase:ro
+    environment:
+      # Set OpenAI API key from .env file or environment
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LLM_MODEL=${LLM_MODEL:-gpt-4o}
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0}
+      - TARGET_ROOT_DIR=/app/target-codebase
+      - DATA_INPUT_DIR=/app/data/input
+      - DATA_OUTPUT_DIR=/app/data/output
+    # Override default command when running
+    # Example: docker-compose run multi-agent-fixer python main.py data/input/trace_1.json --target-root /app/target-codebase
+    command: ["python", "main.py", "--help"]
+    stdin_open: true
+    tty: true
