@@ -106,7 +106,7 @@ multi-agent-fixer/
 6.   **To run the Agent, run command line argument**
 
    ```bash
-   python main.py data/input/trace_1.json --target-root ../target-codebase
+   python main.py data/input/trace_1.json --target-root '../target-codebase'
    ```
 
    The system will automatically resolve Linux paths (like `/usr/srv/app/models.py`) to Windows paths relative to your target root directory.
