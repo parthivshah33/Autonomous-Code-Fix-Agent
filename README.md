@@ -101,7 +101,7 @@ multi-agent-fixer/
        └── ...
    ```
 
-6. Add trace file: Add trace_1.json file to the 'multi-agent-fixer/data/input'
+6. **Add trace file** : Add trace_1.json file to the 'multi-agent-fixer/data/input'
 
 6.   **To run the Agent, run command line argument**
 
