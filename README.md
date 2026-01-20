@@ -77,13 +77,10 @@ multi-agent-fixer/
    pip install -r requirements.txt
    ```
 
-4. **Set up environment variables:**
+4. **Setup env file :**
+    1. Create '.env' file
 
-   ```bash
-   cp .env.example .env
-   ```
-
-   Edit `.env` and add your OpenAI API key:
+    2. Edit `.env` and add your OpenAI API key:
 
    ```
    OPENAI_API_KEY=your_api_key_here
@@ -93,7 +90,7 @@ multi-agent-fixer/
 
    **Important**: If your trace.json files contain Linux-style paths (like `/usr/srv/app/...`), you must set up the target codebase directory.
 
-   The multi-agent-fixer project and the target codebase you want to fix should be at the same directory level:
+   It is better if the multi-agent-fixer project and the target codebase you want to fix be at the same directory level:
 
    ```
    parent-directory/
@@ -104,19 +101,10 @@ multi-agent-fixer/
        └── ...
    ```
 
-   You can specify the target root directory in two ways:
-
-   **Option A: Command line argument (recommended)**
+   **To run the Agent, run command line argument**
 
    ```bash
    python main.py data/input/trace_1.json --target-root ../target-codebase
-   ```
-
-   **Option B: Environment variable**
-   Add to your `.env` file:
-
-   ```
-   TARGET_ROOT_DIR=../target-codebase
    ```
 
    The system will automatically resolve Linux paths (like `/usr/srv/app/models.py`) to Windows paths relative to your target root directory.
