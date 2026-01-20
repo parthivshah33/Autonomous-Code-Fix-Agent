@@ -58,36 +58,43 @@ multi-agent-fixer/
 ### Setup
 
 1. **Clone or navigate to the project directory:**
+
    ```bash
    cd multi-agent-fixer
    ```
 
-2. **Create a virtual environment (recommended):**
+2. **Create a virtual environment and start it.(recommended):**
+
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   .\venv\Scripts\Activate.ps1 (Windows) - You can start venv by any preffered way.
+
    ```
 
 3. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Set up environment variables:**
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Edit `.env` and add your OpenAI API key:
+
    ```
    OPENAI_API_KEY=your_api_key_here
    ```
 
 5. **Set up target codebase directory:**
-   
+
    **Important**: If your trace.json files contain Linux-style paths (like `/usr/srv/app/...`), you must set up the target codebase directory.
-   
+
    The multi-agent-fixer project and the target codebase you want to fix should be at the same directory level:
+
    ```
    parent-directory/
    ├── multi-agent-fixer/          # This project
@@ -96,120 +103,23 @@ multi-agent-fixer/
        ├── models/
        └── ...
    ```
-   
+
    You can specify the target root directory in two ways:
-   
+
    **Option A: Command line argument (recommended)**
+
    ```bash
    python main.py data/input/trace_1.json --target-root ../target-codebase
    ```
-   
+
    **Option B: Environment variable**
    Add to your `.env` file:
+
    ```
    TARGET_ROOT_DIR=../target-codebase
    ```
-   
+
    The system will automatically resolve Linux paths (like `/usr/srv/app/models.py`) to Windows paths relative to your target root directory.
-
-## Docker Installation (Recommended)
-
-Docker provides an isolated, reproducible environment that works across different operating systems.
-
-### Quick Start with Docker
-
-1. **Clone or navigate to the project directory:**
-   ```bash
-   cd multi-agent-fixer
-   ```
-
-2. **Set up environment variables:**
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` and add your OpenAI API key:
-   ```
-   OPENAI_API_KEY=your_api_key_here
-   ```
-
-3. **Build the Docker image:**
-   ```bash
-   docker build -t multi-agent-fixer:latest .
-   ```
-
-4. **Run using Docker:**
-   ```bash
-   # Using docker run directly
-   docker run --rm \
-     -v "$(pwd)/data/input:/app/data/input:ro" \
-     -v "$(pwd)/data/output:/app/data/output" \
-     -v "$(pwd)/../fastapi-tdd-user-authentication:/app/target-codebase:ro" \
-     --env-file .env \
-     -e TARGET_ROOT_DIR=/app/target-codebase \
-     multi-agent-fixer:latest \
-     python main.py data/input/trace_1.json --target-root /app/target-codebase
-   ```
-
-5. **Using Docker Compose:**
-   ```bash
-   # Update docker-compose.yml with your target codebase path
-   # Then run:
-   docker-compose run --rm multi-agent-fixer \
-     python main.py data/input/trace_1.json --target-root /app/target-codebase
-   ```
-
-### Docker Volume Mounts
-
-The Docker setup mounts:
-- `./data/input` → `/app/data/input` (read-only) - for trace files
-- `./data/output` → `/app/data/output` - for generated results
-- `../target-codebase` → `/app/target-codebase` (read-only) - your codebase to fix
-
-Adjust the paths in `docker-compose.yml` or the run scripts as needed.
-
-## Usage
-
-### Basic Usage
-
-Run the system with an error/trace JSON file:
-
-```bash
-python main.py data/input/trace_1.json
-```
-
-### Command Line Options
-
-```bash
-python main.py <error_file> [options]
-
-Arguments:
-  error_file              Path to the error/trace JSON file
-
-Options:
-  --target-root DIR       Root directory of the target codebase being fixed
-                         (required if trace.json contains Linux paths like /usr/srv/app/...)
-  --output-dir DIR        Output directory for logs and fixed files
-                         (default: data/output)
-  --verbose               Enable verbose output
-  --help                 Show help message
-```
-
-### Example
-
-```bash
-# Run with default settings (paths used as-is)
-python main.py data/input/trace_1.json
-
-# Run with target root directory (for Linux paths in trace.json)
-python main.py data/input/trace_1.json --target-root ../target-codebase
-
-# Run with custom output directory
-python main.py data/input/trace_1.json --output-dir results/
-
-# Run with both target root and verbose output
-python main.py data/input/trace_1.json --target-root ../target-codebase --verbose
-```
 
 ## Input Format
 
@@ -228,7 +138,8 @@ The system expects a JSON file containing error/trace information with the follo
 ]
 ```
 
-**Note on File Paths**: 
+**Note on File Paths**:
+
 - If your trace.json contains Linux-style absolute paths (starting with `/`), you **must** specify the `--target-root` parameter pointing to your local codebase directory.
 - The system will automatically map Linux paths (e.g., `/usr/srv/app/models.py`) to your local target root directory.
 - If paths in trace.json are already Windows-relative or absolute Windows paths, you can omit `--target-root`.
@@ -238,18 +149,20 @@ The system expects a JSON file containing error/trace information with the follo
 The system generates several output files in the `data/output/` directory:
 
 1. **agent_history.json**: Complete message history of all agent interactions
-2. **final_state_*.json**: Final shared memory state with all agent outputs
+2. **final*state*\*.json**: Final shared memory state with all agent outputs
 3. **rca_report.json**: Structured RCA report
 4. **fix_plan.json**: Detailed fix plan
 5. **patch_result.json**: Patch generation results
-6. **fixed_*.py**: Generated fixed code files (in the same directory as original files)
+6. **fixed\_\*.py**: Generated fixed code files (in the same directory as original files)
 
 ## Agent Tools
 
 ### RCA Agent Tools
+
 - `get_root_cause_details`: Parses error files and extracts stack trace information
 
 ### Patch Generation Agent Tools
+
 - `read_source_file`: Reads source code files to verify current state
 - `verify_code_snippet`: Verifies code snippets exist before patching
 - `apply_patch_and_write`: Applies changes and writes to new files (with `fixed_` prefix)
@@ -289,11 +202,11 @@ Edit `src/config.py` or set environment variables:
 ### Common Issues
 
 1. **API Key Error**: Make sure your `.env` file contains a valid `OPENAI_API_KEY`
-2. **File Not Found**: 
+2. **File Not Found**:
    - Ensure the error file path is correct and the file exists
    - If trace.json contains Linux paths, make sure you've specified `--target-root` pointing to your local codebase
    - Verify that the target root directory exists and contains the source files referenced in the trace
-3. **Path Resolution Errors**: 
+3. **Path Resolution Errors**:
    - If you see "File not found" errors for Linux paths, ensure `--target-root` is set correctly
    - The target root should be the root directory of your codebase (where your source files are located)
    - Both the multi-agent-fixer project and target codebase should be at the same directory level
@@ -317,18 +230,6 @@ python main.py data/input/trace_1.json --verbose
 - State management uses TypedDict with Pydantic models
 - Logging system tracks all interactions for compliance
 
-### Adding New Tools
-
-1. Create tool function in `src/tools/`
-2. Decorate with `@tool` from `langchain_core.tools`
-3. Import and add to agent's tool list
-
-### Modifying Agents
-
-1. Edit agent file in `src/agents/`
-2. Update prompts as needed
-3. Ensure state updates are returned correctly
-4. 
 ## Contact
 
 For questions or issues, please refer to the project documentation or contact the email : 'parthivshah125@gmail.com' or linkedin : https://www.linkedin.com/in/parthivshah33
