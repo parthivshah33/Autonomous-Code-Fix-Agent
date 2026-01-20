@@ -140,13 +140,7 @@ Docker provides an isolated, reproducible environment that works across differen
 
 4. **Run using Docker:**
    ```bash
-   # Using the convenience script (Linux/Mac)
-   ./run-docker.sh data/input/trace_1.json ../fastapi-tdd-user-authentication
-   
-   # Or using the convenience script (Windows)
-   run-docker.bat data/input/trace_1.json ../fastapi-tdd-user-authentication
-   
-   # Or using docker run directly
+   # Using docker run directly
    docker run --rm \
      -v "$(pwd)/data/input:/app/data/input:ro" \
      -v "$(pwd)/data/output:/app/data/output" \
