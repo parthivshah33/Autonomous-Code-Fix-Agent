@@ -101,7 +101,9 @@ multi-agent-fixer/
        └── ...
    ```
 
-   **To run the Agent, run command line argument**
+6. Add trace file: Add trace_1.json file to the 'multi-agent-fixer/data/input'
+
+6.   **To run the Agent, run command line argument**
 
    ```bash
    python main.py data/input/trace_1.json --target-root ../target-codebase
